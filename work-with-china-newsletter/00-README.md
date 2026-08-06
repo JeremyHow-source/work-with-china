@@ -38,4 +38,6 @@ He is the author of **"Work With China: From Zero to Offer"** — a step-by-step
 | 16 | [5 Things the GoPro Story Tells You About Working for a Chinese Company](./16-5-things-gopro-story.md) | May 25, 2026 |
 | 17 | [4 Types of Chinese Companies — And Why Getting This Wrong Costs You Two Years](./17-4-types-chinese-companies.md) | Jun 10, 2026 |
 | 18 | [I Evaluate Chinese Companies the Same Way I Pick Watermelons](./18-evaluate-chinese-companies-watermelons.md) | Jun 15, 2026 |
-| 19 | [6 Questions You Need to Ask Before Joining a Chinese Company](./19-6-questions-before-joining.md) | 2026 |
+| 19 | [8 Questions You Must Ask Before Accepting a Job at a Chinese Multinational](./19-8-questions-before-accepting-job.md) | Jun 23, 2026 |
+| 20 | [20 Questions to Answer Before You Pursue a Job at a Chinese Company](./20-20-questions-before-pursue-job.md) | Aug 5, 2026 |
+
