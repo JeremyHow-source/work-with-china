@@ -50,6 +50,197 @@ footer a{color:#b8860b}
 .kofi-banner{display:flex;align-items:center;justify-content:center;gap:0.8rem;padding:0.6rem 1.2rem;margin:1rem auto 0;max-width:450px;border-radius:8px;background:rgba(255,94,91,0.15);border:1px solid rgba(255,94,91,0.3);}
 .kofi-banner .kofi-msg{color:#fca5a5;font-size:0.85rem;}
 .kofi-banner .kofi-btn{padding:0.4rem 0.9rem;border-radius:4px;background:#ff5e5b;color:#fff;text-decoration:none;font-weight:700;font-size:0.8rem;white-space:nowrap;}
+
+/* ===== FLOATING FEEDBACK BUTTON (Bottom-Left, separated from Ko-fi Support on Bottom-Right) ===== */
+.feedback-float-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #1d4ed8 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 24px rgba(2, 132, 199, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+  outline: none;
+}
+.feedback-float-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 32px rgba(2, 132, 199, 0.6), 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+}
+.feedback-float-btn .fb-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.feedback-float-btn .fb-text {
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .feedback-float-btn {
+    bottom: 16px;
+    left: 16px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* ===== MODAL & FORM STYLES ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  backdrop-filter: blur(5px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.8rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  color: #1e293b;
+  animation: modalFadeIn 0.25s ease-out;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+.modal-close-x {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+.modal-close-x:hover {
+  color: #e11d48;
+  background: #f1f5f9;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  font-size: 0.84rem;
+  color: #0369a1;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #0f172a;
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: #0284c7;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+}
+.form-group textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+@media (max-width: 600px) {
+  .form-row-2 { grid-template-columns: 1fr; }
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #e2e8f0;
+}
+.btn-primary, .btn-secondary {
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #fff;
+}
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+.btn-primary:hover, .btn-secondary:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 85px;
+  left: 24px;
+  background: #0f172a;
+  color: #38bdf8;
+  border: 1px solid #0284c7;
+  padding: 0.75rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  z-index: 10001;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>
 </head>
 <body>
@@ -480,6 +671,205 @@ footer a{color:#b8860b}
   <span class="kofi-icon">☕</span>
   <span class="kofi-text">Support on Ko-fi</span>
 </a>
+
+
+<!-- ===== FLOATING FEEDBACK BUTTON (Always Visible, Bottom-Left) ===== -->
+<button class="feedback-float-btn" onclick="openFeedbackModal()" title="Provide Feedback, Suggestions or Reader Notes">
+  <span class="fb-icon">💬</span>
+  <span class="fb-text">Feedback & Notes</span>
+</button>
+
+<!-- ===== FEEDBACK & NOTES MODAL ===== -->
+<div class="modal-overlay" id="feedbackModalOverlay">
+  <div class="modal">
+    <div class="modal-header-row">
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <span style="font-size:1.4rem;">💬</span>
+        <div>
+          <h3 style="margin:0;font-size:1.15rem;color:#0284c7;">Work With China — Feedback & Reader Notes</h3>
+          <div style="font-size:0.75rem;color:#64748b;margin-top:2px;">读者反馈、经验分享与阅读笔记</div>
+        </div>
+      </div>
+      <button class="modal-close-x" onclick="closeFeedbackModal()" title="Close">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label>Feedback Category / 反馈类型</label>
+      <select id="wwcFeedbackType">
+        <option value="correction">🐛 Typo / Factual Correction (勘误与文字修正)</option>
+        <option value="suggestion">💡 Content Suggestion / Personal Experience (内容补充与实战经验)</option>
+        <option value="question">❓ Question / Cross-Cultural Challenge (跨文化职场疑问)</option>
+        <option value="note">📝 Personal Reading Note (个人反思笔记)</option>
+      </select>
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Article / 对应文章</label>
+        <select id="wwcArticle">
+          <option value="Art 1: It's Not Culture. It's Trust.">1. It's Not Culture. It's Trust.</option>
+          <option value="Art 9: 5 Things People Get Wrong">9. 5 Things People Get Wrong</option>
+          <option value="Art 10: Trusted Less Than Products Deserve">10. Trusted Less Than Products Deserve</option>
+          <option value="Art 11: 4 Types of Global Professionals">11. 4 Types of Global Professionals</option>
+          <option value="Art 12: 3 Chinese Business Behaviors">12. 3 Chinese Business Behaviors</option>
+          <option value="Art 13: How Chinese Managers 'Trust'">13. How Chinese Managers "Trust"</option>
+          <option value="Art 16: GoPro Story">16. GoPro Story</option>
+          <option value="Art 17: 4 Types of Chinese Companies">17. 4 Types of Chinese Companies</option>
+          <option value="Art 18: Watermelon Method">18. Watermelon Method</option>
+          <option value="Art 19: 8 Questions Before Accepting a Job">19. 8 Questions Before Accepting a Job</option>
+          <option value="Art 20: 20 Questions Before Pursuing a Job">20. 20 Questions Before Pursuing a Job</option>
+          <option value="Automation Mindset Knowledge Bank">📚 Automation Mindset Knowledge Bank</option>
+          <option value="General Work With China Newsletter">General Newsletter Feedback</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Specific Section / Paragraph Topic</label>
+        <input type="text" id="wwcTopic" placeholder="e.g. Trust definition, Watermelon method">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Your Name / Handle (Optional / 姓名或联系方式)</label>
+      <input type="text" id="wwcAuthor" placeholder="e.g. @professional or email@example.com">
+    </div>
+
+    <div class="form-group">
+      <label>Detailed Feedback / Notes / 详细反馈与笔记内容 <span style="color:#e11d48;">*</span></label>
+      <textarea id="wwcContent" placeholder="Describe the typo, your own cross-cultural experience, career dilemma, or key takeaways in detail..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Tags / 标签 (comma-separated)</label>
+      <input type="text" id="wwcTags" placeholder="e.g. cross-culture, trust, interview, negotiation, typo">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeFeedbackModal()">Cancel (取消)</button>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn-secondary" onclick="copyWwcFeedbackMarkdown()" title="Copy formatted feedback markdown to clipboard">📋 Copy Details</button>
+        <button class="btn-primary" onclick="submitWwcGitHubIssue()" title="Open pre-filled GitHub Issue with these details" style="background:#0284c7;color:#fff;">🚀 Submit on GitHub</button>
+        <button class="btn-primary" onclick="saveWwcNote()" title="Save to local browser notes">💾 Save to Notes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="wwcToast">Note saved</div>
+
+<script>
+const WWC_GITHUB_REPO_URL = "https://github.com/mrporky594/work-with-china";
+
+function openFeedbackModal(defaultArticle) {
+  const overlay = document.getElementById('feedbackModalOverlay');
+  if (defaultArticle) {
+    const artSelect = document.getElementById('wwcArticle');
+    if (artSelect) artSelect.value = defaultArticle;
+  }
+  const savedAuthor = localStorage.getItem('wwc_feedback_author');
+  if (savedAuthor) {
+    const authorEl = document.getElementById('wwcAuthor');
+    if (authorEl && !authorEl.value) authorEl.value = savedAuthor;
+  }
+  overlay.classList.add('open');
+  document.getElementById('wwcContent').focus();
+}
+
+function closeFeedbackModal() {
+  document.getElementById('feedbackModalOverlay').classList.remove('open');
+}
+
+function getWwcFeedbackPayload() {
+  const category = document.getElementById('wwcFeedbackType').value;
+  const article = document.getElementById('wwcArticle').value;
+  const topic = document.getElementById('wwcTopic').value.trim() || 'General';
+  const author = document.getElementById('wwcAuthor').value.trim() || 'Anonymous Reader';
+  const content = document.getElementById('wwcContent').value.trim();
+  const tags = document.getElementById('wwcTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+
+  if (author && author !== 'Anonymous Reader') {
+    localStorage.setItem('wwc_feedback_author', author);
+  }
+
+  const categoryLabels = {
+    'correction': '🐛 Typo / Correction',
+    'suggestion': '💡 Content Suggestion / Experience',
+    'question': '❓ Discussion Question',
+    'note': '📝 Study Note'
+  };
+
+  const formattedMarkdown = `### ${categoryLabels[category] || 'Work With China Feedback'}
+- **Article**: ${article}
+- **Topic / Reference**: ${topic}
+- **Submitted by**: ${author}
+- **Date**: ${new Date().toISOString().split('T')[0]}
+${tags.length ? '- **Tags**: ' + tags.join(', ') : ''}
+
+#### Details & Feedback:
+${content}
+`;
+
+  return { category, article, topic, author, content, tags, formattedMarkdown };
+}
+
+function copyWwcFeedbackMarkdown() {
+  const payload = getWwcFeedbackPayload();
+  if (!payload.content) {
+    alert('Please enter your feedback details before copying.');
+    return;
+  }
+  navigator.clipboard.writeText(payload.formattedMarkdown).then(() => {
+    showWwcToast('Feedback details copied to clipboard! 📋');
+  }).catch(() => {
+    showWwcToast('Feedback copied!');
+  });
+}
+
+function submitWwcGitHubIssue() {
+  const payload = getWwcFeedbackPayload();
+  if (!payload.content) {
+    alert('Please enter your feedback details before submitting.');
+    return;
+  }
+  const title = `[Feedback] ${payload.article} - ${payload.topic}: ${payload.category}`;
+  const issueUrl = `${WWC_GITHUB_REPO_URL}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(payload.formattedMarkdown)}`;
+  window.open(issueUrl, '_blank', 'noopener,noreferrer');
+  showWwcToast('Opening GitHub Issue creation page... 🚀');
+  closeFeedbackModal();
+}
+
+function showWwcToast(msg) {
+  const toast = document.getElementById('wwcToast');
+  if (toast) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+}
+
+function saveWwcNote() {
+  const payload = getWwcFeedbackPayload();
+  if (!payload.content) {
+    alert('Please enter note content.');
+    return;
+  }
+  const existingNotes = JSON.parse(localStorage.getItem('wwc_reader_notes') || '[]');
+  existingNotes.push({
+    category: payload.category,
+    article: payload.article,
+    topic: payload.topic,
+    author: payload.author,
+    content: payload.content,
+    tags: payload.tags,
+    date: new Date().toISOString().split('T')[0]
+  });
+  localStorage.setItem('wwc_reader_notes', JSON.stringify(existingNotes));
+  closeFeedbackModal();
+  showWwcToast('Note saved to local browser storage! 💾');
+}
+
+document.getElementById('feedbackModalOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeFeedbackModal();
+});
+</script>
 
 </body>
 </html>
