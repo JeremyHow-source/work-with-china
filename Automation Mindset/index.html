@@ -751,7 +751,7 @@ footer a{color:#b8860b}
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
         <button class="btn-secondary" onclick="copyAmFeedbackMarkdown()" title="Copy formatted feedback markdown to clipboard">📋 Copy Details</button>
         <button class="btn-primary" onclick="submitAmGitHubIssue()" title="Open pre-filled GitHub Issue with these details" style="background:#b8860b;color:#fff;">🚀 Submit on GitHub</button>
-        <button class="btn-primary" onclick="saveAmNote()" title="Save to local browser notes">💾 Save to Notes</button>
+        <button class="btn-primary" id="btnAmSubmitFeedback" onclick="submitAmFeedbackDirect()" title="Send feedback directly to the author" style="background:linear-gradient(135deg, #059669 0%, #10b981 100%);color:#fff;">📨 Send Feedback</button>
       </div>
     </div>
   </div>
@@ -844,26 +844,63 @@ function showAmToast(msg) {
   }
 }
 
-function saveAmNote() {
+const AM_GOOGLE_SHEET_WEBHOOK_URL = ""; // Paste your Google Apps Script Web App URL here
+
+async function submitAmFeedbackDirect() {
   const payload = getAmFeedbackPayload();
   if (!payload.content) {
-    alert('Please enter note content.');
+    alert('Please enter your feedback details before sending.');
     return;
   }
-  const existingNotes = JSON.parse(localStorage.getItem('wwc_reader_notes') || '[]');
-  existingNotes.push({
+  const btn = document.getElementById('btnAmSubmitFeedback');
+  const oldText = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Sending...';
+  }
+
+  const postData = {
+    website: 'Automation Mindset Knowledge Bank',
     category: payload.category,
     section: payload.section,
     topic: payload.topic,
     author: payload.author,
     content: payload.content,
-    tags: payload.tags,
-    date: new Date().toISOString().split('T')[0]
-  });
-  localStorage.setItem('wwc_reader_notes', JSON.stringify(existingNotes));
-  closeFeedbackModal();
-  showAmToast('Note saved to local browser storage! 💾');
+    tags: payload.tags
+  };
+
+  if (AM_GOOGLE_SHEET_WEBHOOK_URL && AM_GOOGLE_SHEET_WEBHOOK_URL.startsWith('http')) {
+    try {
+      await fetch(AM_GOOGLE_SHEET_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postData)
+      });
+      showAmToast('Feedback submitted to Google Sheet! 📨');
+      document.getElementById('amContent').value = '';
+      closeFeedbackModal();
+    } catch (err) {
+      console.error(err);
+      showAmToast('Transmission error, copied to clipboard! 📋');
+      copyAmFeedbackMarkdown();
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = oldText;
+      }
+    }
+  } else {
+    copyAmFeedbackMarkdown();
+    alert('Feedback details copied to clipboard!\n\nTo submit directly to your Google Sheet, paste your Google Apps Script Web App URL into AM_GOOGLE_SHEET_WEBHOOK_URL in index.html.');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldText;
+    }
+    closeFeedbackModal();
+  }
 }
+
 
 document.getElementById('feedbackModalOverlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeFeedbackModal();

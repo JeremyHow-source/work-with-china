@@ -748,7 +748,7 @@ footer a{color:#b8860b}
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
         <button class="btn-secondary" onclick="copyWwcFeedbackMarkdown()" title="Copy formatted feedback markdown to clipboard">📋 Copy Details</button>
         <button class="btn-primary" onclick="submitWwcGitHubIssue()" title="Open pre-filled GitHub Issue with these details" style="background:#0284c7;color:#fff;">🚀 Submit on GitHub</button>
-        <button class="btn-primary" onclick="saveWwcNote()" title="Save to local browser notes">💾 Save to Notes</button>
+        <button class="btn-primary" id="btnWwcSubmitFeedback" onclick="submitWwcFeedbackDirect()" title="Send feedback directly to the author" style="background:linear-gradient(135deg, #059669 0%, #10b981 100%);color:#fff;">📨 Send Feedback</button>
       </div>
     </div>
   </div>
@@ -845,26 +845,63 @@ function showWwcToast(msg) {
   }
 }
 
-function saveWwcNote() {
+const WWC_GOOGLE_SHEET_WEBHOOK_URL = ""; // Paste your Google Apps Script Web App URL here
+
+async function submitWwcFeedbackDirect() {
   const payload = getWwcFeedbackPayload();
   if (!payload.content) {
-    alert('Please enter note content.');
+    alert('Please enter your feedback details before sending.');
     return;
   }
-  const existingNotes = JSON.parse(localStorage.getItem('wwc_reader_notes') || '[]');
-  existingNotes.push({
+  const btn = document.getElementById('btnWwcSubmitFeedback');
+  const oldText = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Sending...';
+  }
+
+  const postData = {
+    website: 'Work With China Newsletter',
     category: payload.category,
     article: payload.article,
     topic: payload.topic,
     author: payload.author,
     content: payload.content,
-    tags: payload.tags,
-    date: new Date().toISOString().split('T')[0]
-  });
-  localStorage.setItem('wwc_reader_notes', JSON.stringify(existingNotes));
-  closeFeedbackModal();
-  showWwcToast('Note saved to local browser storage! 💾');
+    tags: payload.tags
+  };
+
+  if (WWC_GOOGLE_SHEET_WEBHOOK_URL && WWC_GOOGLE_SHEET_WEBHOOK_URL.startsWith('http')) {
+    try {
+      await fetch(WWC_GOOGLE_SHEET_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postData)
+      });
+      showWwcToast('Feedback submitted to Google Sheet! 📨');
+      document.getElementById('wwcContent').value = '';
+      closeFeedbackModal();
+    } catch (err) {
+      console.error(err);
+      showWwcToast('Transmission error, copied to clipboard! 📋');
+      copyWwcFeedbackMarkdown();
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = oldText;
+      }
+    }
+  } else {
+    copyWwcFeedbackMarkdown();
+    alert('Feedback details copied to clipboard!\n\nTo submit directly to your Google Sheet, paste your Google Apps Script Web App URL into WWC_GOOGLE_SHEET_WEBHOOK_URL in index.html.');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldText;
+    }
+    closeFeedbackModal();
+  }
 }
+
 
 document.getElementById('feedbackModalOverlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeFeedbackModal();
